@@ -22,6 +22,30 @@ def date_time_24hr_format():
     return '%d/%m/%Y, %H:%M - '
 
 
+def splitting_user_and_message(chats_dataFrame):
+    user_name = []
+    message = []
+
+    for i in chats_dataFrame['user_messages']:
+
+        a = re.split('([\w\W]+?):\s', i)
+        if (a[1:]):
+            # creating two different lists of usernames and messages from user_message column
+            # if a row is a valid message than it will store message in message list and
+            # user_name in user_name list
+            user_name.append(a[1])
+            message.append(a[2])
+        else:
+            # if it is not a valid message than it would be a group notification
+            # we will also store it in list accordingly.
+            user_name.append("Group Notification")
+            message.append(a[0])
+
+    chats_dataFrame['User_Name'] = user_name
+    chats_dataFrame['Message'] = message
+    chats_dataFrame.drop('user_messages', inplace=True, axis=1)
+    return chats_dataFrame
+
 
 def creating_dataFrame(file_name):
 
@@ -56,27 +80,7 @@ def creating_dataFrame(file_name):
 
     # print(chats_dataFrame)
 
-    user_name = []
-    message = []
-
-    for i in chats_dataFrame['user_messages']:
-
-        a = re.split('([\w\W]+?):\s', i)
-        if(a[1:]):
-            # creating two different lists of usernames and messages from user_message column
-            # if a row is a valid message than it will store message in message list and
-            # user_name in user_name list
-            user_name.append(a[1])
-            message.append(a[2])
-        else:
-            # if it is not a valid message than it would be a group notification
-            # we will also store it in list accordingly.
-            user_name.append("Group Notification")
-            message.append(a[0])
-
-    chats_dataFrame['User_Name'] = user_name
-    chats_dataFrame['Message'] = message
-    chats_dataFrame.drop('user_messages', inplace=True, axis=1)
+    chats_dataFrame = splitting_user_and_message(chats_dataFrame)
     print(chats_dataFrame)
 
 
