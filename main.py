@@ -1,4 +1,3 @@
-import asyncio
 import os
 import re
 
@@ -46,6 +45,30 @@ def splitting_user_and_message(chats_dataFrame):
     chats_dataFrame.drop('user_messages', inplace=True, axis=1)
     return chats_dataFrame
 
+def re_for_date_and_time():
+    return '\d{2,4}\-\d{2}\-\d{2}'
+
+def splitting_date_and_time(chats_dataFrame):
+    date = []
+    time = []
+    # str = ''
+    for i in chats_dataFrame['date_time']:
+        time.append(re.split(re_for_date_and_time(), str(i))[1:])
+        date.append((re.findall(re_for_date_and_time(), str(i)))[:])
+        # print(re.findall(re_for_date_and_time(), str(i)))
+
+    print(time)
+    print('-------------------+++++++++++++++++**************----------------------------')
+    print(date)
+    chats_dataFrame['Date'] = date
+    chats_dataFrame['Time'] = time
+    # chats_dataFrame.drop(chats_dataFrame['date_time'], inplace=True)
+    print(chats_dataFrame)
+    print(chats_dataFrame.columns)
+    print(type(chats_dataFrame['Date'][0]))
+
+    pass
+
 
 def creating_dataFrame(file_name):
 
@@ -81,8 +104,8 @@ def creating_dataFrame(file_name):
     # print(chats_dataFrame)
 
     chats_dataFrame = splitting_user_and_message(chats_dataFrame)
-    print(chats_dataFrame)
-
+    # print(chats_dataFrame)
+    splitting_date_and_time(chats_dataFrame)
 
 
     # line = file.readlines()
