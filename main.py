@@ -49,19 +49,6 @@ def re_for_date_and_time():
     return '\d{2,4}\-\d{2}\-\d{2}'
 
 def splitting_date_and_time(chats_dataFrame):
-    date = []
-    time = []
-    # str = ''
-    for i in chats_dataFrame['date_time']:
-        time_var = re.split(re_for_date_and_time(), str(i))[1:]
-        date_var = (re.findall(re_for_date_and_time(), str(i)))[:]
-        time.append(time_var[0])
-        date.append(date_var[0])
-        # print(re.findall(re_for_date_and_time(), str(i)))
-
-    print(time)
-    print('-------------------+++++++++++++++++**************----------------------------')
-    print(date)
 
     chats_dataFrame['Date'] = pd.to_datetime(chats_dataFrame['date_time']).dt.date
     chats_dataFrame['Time'] = pd.to_datetime(chats_dataFrame['date_time']).dt.time
@@ -73,6 +60,12 @@ def splitting_date_and_time(chats_dataFrame):
 
     pass
 
+def adding_helper_columns(chats_dataFrame):
+    chats_dataFrame['Day'] = pd.to_datetime(chats_dataFrame['date_time']).dt.strftime('%a')
+    chats_dataFrame['Year'] = pd.to_datetime(chats_dataFrame['date_time']).apply(lambda x: x.year)
+    chats_dataFrame['Month'] = pd.to_datetime(chats_dataFrame['date_time']).apply(lambda x: x.strftime('%b'))
+    return chats_dataFrame
+    pass
 
 def creating_dataFrame(file_name):
 
@@ -110,26 +103,14 @@ def creating_dataFrame(file_name):
     chats_dataFrame = splitting_user_and_message(chats_dataFrame)
     # print(chats_dataFrame)
     splitting_date_and_time(chats_dataFrame)
+    return adding_helper_columns(chats_dataFrame)
 
-
-    # line = file.readlines()
-    # print(line.__sizeof__())
-    # splitting = line[0].split(',')
-    # print(line)
-    # print(splitting)
-    # while True:
-    #     (yield)
-
-    # specific_line = np.array(line[8:12])
-    # print(specific_line)
-
-    pass
 
 
 if __name__ == '__main__':
     file_name = input("Enter file name with extension : ")
-    creating_dataFrame(file_name)
-    # print("\n-------------*********************------------------\n")
-    # creating_dataFrame(file_name)
+    chats_dataFrame = creating_dataFrame(file_name)
+    print(chats_dataFrame)
+
 
     pass
