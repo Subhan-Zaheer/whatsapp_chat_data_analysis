@@ -53,19 +53,23 @@ def splitting_date_and_time(chats_dataFrame):
     time = []
     # str = ''
     for i in chats_dataFrame['date_time']:
-        time.append(re.split(re_for_date_and_time(), str(i))[1:])
-        date.append((re.findall(re_for_date_and_time(), str(i)))[:])
+        time_var = re.split(re_for_date_and_time(), str(i))[1:]
+        date_var = (re.findall(re_for_date_and_time(), str(i)))[:]
+        time.append(time_var[0])
+        date.append(date_var[0])
         # print(re.findall(re_for_date_and_time(), str(i)))
 
     print(time)
     print('-------------------+++++++++++++++++**************----------------------------')
     print(date)
-    chats_dataFrame['Date'] = date
-    chats_dataFrame['Time'] = time
+
+    chats_dataFrame['Date'] = pd.to_datetime(chats_dataFrame['date_time']).dt.date
+    chats_dataFrame['Time'] = pd.to_datetime(chats_dataFrame['date_time']).dt.time
+
     # chats_dataFrame.drop(chats_dataFrame['date_time'], inplace=True)
     print(chats_dataFrame)
     print(chats_dataFrame.columns)
-    print(type(chats_dataFrame['Date'][0]))
+    print(type(chats_dataFrame['Time'][0]))
 
     pass
 
