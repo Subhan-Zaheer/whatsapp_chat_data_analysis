@@ -69,10 +69,13 @@ def adding_helper_columns(chats_dataFrame):
 
 def most_active_users(chats_dataFrame):
     temp_chats_dataFrame = chats_dataFrame.copy()
-    temp_chats_dataFrame['message_count'] = [1] * chats_dataFrame.shape[0]
-    temp_chats_dataFrame['message_count'] = chats_dataFrame.groupby('User_Name').sum().reset_index()
+    temp_chats_dataFrame['Message_Count'] = [1] * chats_dataFrame.shape[0]
+    temp_chats_dataFrame.drop(columns='Year', inplace=True)
+    temp_chats_dataFrame = temp_chats_dataFrame.groupby('User_Name').sum().reset_index()
+    print(temp_chats_dataFrame.sort_values(by='Message_Count', ascending=False).head(50))
+    print(temp_chats_dataFrame.describe())
+    return chats_dataFrame
 
-    pass
 
 def creating_dataFrame(file_name):
 
@@ -113,11 +116,11 @@ def creating_dataFrame(file_name):
     return adding_helper_columns(chats_dataFrame)
 
 
-
 if __name__ == '__main__':
     file_name = input("Enter file name with extension : ")
     chats_dataFrame = creating_dataFrame(file_name)
-    print(chats_dataFrame)
+    chats_dataFrame = most_active_users(chats_dataFrame)
+    # print(chats_dataFrame)
 
 
     pass
