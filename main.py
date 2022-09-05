@@ -3,6 +3,8 @@ import re
 
 import numpy as np
 import pandas as pd
+import datetime
+import time
 import matplotlib as mlt
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -11,11 +13,14 @@ import seaborn as sns
 def converting_time_in_12hr_format():
     return '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s'
 
+
 def converting_time_in_24hr_format():
     return '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
 
+
 def date_time_12hr_format():
     return '%d/%m/%Y, %I:%M %p - '
+
 
 def date_time_24hr_format():
     return '%d/%m/%Y, %H:%M - '
@@ -45,8 +50,10 @@ def splitting_user_and_message(chats_dataFrame):
     chats_dataFrame.drop('user_messages', inplace=True, axis=1)
     return chats_dataFrame
 
+
 def re_for_date_and_time():
     return '\d{2,4}\-\d{2}\-\d{2}'
+
 
 def splitting_date_and_time(chats_dataFrame):
 
@@ -60,12 +67,14 @@ def splitting_date_and_time(chats_dataFrame):
 
     pass
 
+
 def adding_helper_columns(chats_dataFrame):
     chats_dataFrame['Day'] = pd.to_datetime(chats_dataFrame['date_time']).dt.strftime('%a')
     chats_dataFrame['Year'] = pd.to_datetime(chats_dataFrame['date_time']).apply(lambda x: x.year)
     chats_dataFrame['Month'] = pd.to_datetime(chats_dataFrame['date_time']).apply(lambda x: x.strftime('%b'))
     return chats_dataFrame
     pass
+
 
 def most_active_users(chats_dataFrame):
     temp_chats_dataFrame = chats_dataFrame.copy()
@@ -75,6 +84,12 @@ def most_active_users(chats_dataFrame):
     print(temp_chats_dataFrame.sort_values(by='Message_Count', ascending=False).head(50))
     print(temp_chats_dataFrame.describe())
     return chats_dataFrame
+
+
+def last_30_days_chat(chats_dataFrame):
+    date = chats_dataFrame.iloc[-1]['Date']
+    time.ctime()
+    pass
 
 
 def creating_dataFrame(file_name):
