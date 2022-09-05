@@ -67,6 +67,13 @@ def adding_helper_columns(chats_dataFrame):
     return chats_dataFrame
     pass
 
+def most_active_users(chats_dataFrame):
+    temp_chats_dataFrame = chats_dataFrame.copy()
+    temp_chats_dataFrame['message_count'] = [1] * chats_dataFrame.shape[0]
+    temp_chats_dataFrame['message_count'] = chats_dataFrame.groupby('User_Name').sum().reset_index()
+
+    pass
+
 def creating_dataFrame(file_name):
 
     """ Converting raw data into presentable data frame"""
