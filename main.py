@@ -83,12 +83,29 @@ def most_active_users(chats_dataFrame):
     temp_chats_dataFrame = temp_chats_dataFrame.groupby('User_Name').sum().reset_index()
     print(temp_chats_dataFrame.sort_values(by='Message_Count', ascending=False).head(50))
     print(temp_chats_dataFrame.describe())
-    return chats_dataFrame
+    return temp_chats_dataFrame
 
 
 def last_30_days_chat(chats_dataFrame):
-    date = chats_dataFrame.iloc[-1]['Date']
-    time.ctime()
+    temp_df = chats_dataFrame.copy()
+    seconds_of_date_of_month_back = time.ctime(time.time()-2592000)
+    date_of_month_back = pd.to_datetime(seconds_of_date_of_month_back).date()
+    print(f"Date of month back is : {date_of_month_back}")
+    today = pd.to_datetime(time.ctime(time.time())).date()
+    print(f"Today date is : {today}")
+    today_index = temp_df[temp_df['Date'] == today].index
+    today_index = today_index[0]
+    print(f"Index in today_index is : {today_index}")
+    print(f"Date of month back is {date_of_month_back}")
+    date_of_month_back_index = temp_df[temp_df['Date']==date_of_month_back].index
+    date_of_month_back_index = date_of_month_back_index[len(date_of_month_back_index)-1]
+    print(f"Index in date_of_month_back_index is : {date_of_month_back_index}")
+    prev_30_days_chat = temp_df.iloc[date_of_month_back_index:today_index]
+    print(prev_30_days_chat)
+    print(prev_30_days_chat[2::-1])
+
+    active_user_in_prev_30_days = most_active_users(prev_30_days_chat)
+    print(active_user_in_prev_30_days)
     pass
 
 
@@ -135,6 +152,7 @@ if __name__ == '__main__':
     file_name = input("Enter file name with extension : ")
     chats_dataFrame = creating_dataFrame(file_name)
     chats_dataFrame = most_active_users(chats_dataFrame)
+    last_30_days_chat(chats_dataFrame)
     # print(chats_dataFrame)
 
 
