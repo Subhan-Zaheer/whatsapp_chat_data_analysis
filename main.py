@@ -83,7 +83,7 @@ def most_active_users(chats_dataFrame):
     temp_chats_dataFrame = temp_chats_dataFrame.groupby('User_Name').sum().reset_index()
     print(temp_chats_dataFrame.sort_values(by='Message_Count', ascending=False).head(50))
     print(temp_chats_dataFrame.describe())
-    return temp_chats_dataFrame
+    return chats_dataFrame
 
 
 def last_30_days_chat(chats_dataFrame):
@@ -149,6 +149,7 @@ def creating_dataFrame(file_name):
 
 
 if __name__ == '__main__':
+
     file_name = input("Enter file name with extension : ")
     chats_dataFrame = creating_dataFrame(file_name)
     chats_dataFrame = most_active_users(chats_dataFrame)
