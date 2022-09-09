@@ -60,7 +60,6 @@ def splitting_date_and_time(chats_dataFrame):
     chats_dataFrame['Date'] = pd.to_datetime(chats_dataFrame['date_time']).dt.date
     chats_dataFrame['Time'] = pd.to_datetime(chats_dataFrame['date_time']).dt.time
 
-    # chats_dataFrame.drop(chats_dataFrame['date_time'], inplace=True)
     print(chats_dataFrame)
     print(chats_dataFrame.columns)
     print(type(chats_dataFrame['Time'][0]))
@@ -133,17 +132,16 @@ def creating_dataFrame(file_name):
 
     # extracting out the date and time from given raw string.
     date_and_time = re.findall(split_formats['12hr'], raw_string)
-    # print(date_and_time)
+
     chats_dataFrame = pd.DataFrame({'date_time':date_and_time, 'user_messages':user_messages })
-    # print(chats_dataFrame)
+
 
     # Converting date_time to pandas date_time object.
     chats_dataFrame['date_time'] = pd.to_datetime(chats_dataFrame['date_time'], format=datetime_formats['12hr'])
 
-    # print(chats_dataFrame)
 
     chats_dataFrame = splitting_user_and_message(chats_dataFrame)
-    # print(chats_dataFrame)
+
     splitting_date_and_time(chats_dataFrame)
     return adding_helper_columns(chats_dataFrame)
 
@@ -154,7 +152,6 @@ if __name__ == '__main__':
     chats_dataFrame = creating_dataFrame(file_name)
     chats_dataFrame = most_active_users(chats_dataFrame)
     last_30_days_chat(chats_dataFrame)
-    # print(chats_dataFrame)
 
 
     pass
