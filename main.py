@@ -14,6 +14,22 @@ def converting_time_in_12hr_format():
     return '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s'
 
 
+def converting_time_in_12hr_format_for_iphone():
+    return '\[\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}:\d{2}\s[APap][mM]\]'
+
+
+def converting_time_in_24hr_format_for_iphone():
+    return '[\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s]'
+
+
+def date_time_12hr_format_iphone():
+    return '%d/%m/%Y, %I:%M:%S %p'
+
+
+def date_time_24hr_format_iphone():
+    return '%d/%m/%Y, %H:%M - '
+
+
 def converting_time_in_24hr_format():
     return '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
 
@@ -106,6 +122,57 @@ def last_30_days_chat(chats_dataFrame):
     active_user_in_prev_30_days = most_active_users(prev_30_days_chat)
     print(active_user_in_prev_30_days)
     pass
+
+
+def total_messagelength_of_every_user(chats_dataFrame):
+    another_df = chats_dataFrame.copy()
+    another_df['Message_Length'] = another_df['Message'].apply(lambda x: len(x))
+    print(another_df.groupby('User_Name').sum().reset_index().drop(columns='Year').sort_values(by='Message_Length').head(50))
+    return another_df
+    pass
+
+
+def creating_dateFrame_for_Iphone_chat(file_name):
+    """ Converting raw data into presentable data frame"""
+
+    split_formats = {
+        '12hr': converting_time_in_12hr_format(),
+        '24hr': converting_time_in_24hr_format(),
+        'custom': ''
+    }
+    datetime_formats = {
+        '12hr': date_time_12hr_format(),
+        '24hr': date_time_24hr_format(),
+        'custom': ''
+    }
+
+    file = open(r"C:\Users\Khan Mob s  Comp\PycharmProjects\Whatsapp_Chat_data_analysis_iphone\bds_media_chat_data.txt",
+                'r',
+                encoding='utf-8')
+
+    raw_string = " ".join(file.read().split('\n'))  # splitting our text by \n.
+
+    # extracting the user messages from given raw string.
+    user_messages = re.split(split_formats['12hr'], raw_string)[1:]
+
+    # extracting out the date and time from given raw string.
+    date_and_time = re.findall(split_formats['12hr'], raw_string)
+
+    chats_dataFrame = pd.DataFrame({'date_time': date_and_time, 'user_messages': user_messages})
+
+    # Converting date_time to pandas date_time object.
+
+    ls = []
+    for i in chats_dataFrame['date_time']:
+        ls.append(i[1:-1])
+    sr = pd.Series(ls)
+    chats_dataFrame['date_time'] = sr
+    chats_dataFrame['date_time'] = pd.to_datetime(chats_dataFrame['date_time'], format=datetime_formats['12hr'])
+
+    chats_dataFrame = splitting_user_and_message(chats_dataFrame)
+
+    splitting_date_and_time(chats_dataFrame)
+    return adding_helper_columns(chats_dataFrame)
 
 
 def creating_dataFrame(file_name):
