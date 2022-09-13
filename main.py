@@ -1,6 +1,6 @@
 import os
 import re
-
+import emoji
 import numpy as np
 import pandas as pd
 import datetime
@@ -106,10 +106,12 @@ def last_30_days_chat(chats_dataFrame):
     seconds_of_date_of_month_back = time.ctime(time.time()-2592000)
     date_of_month_back = pd.to_datetime(seconds_of_date_of_month_back).date()
     print(f"Date of month back is : {date_of_month_back}")
-    today = pd.to_datetime(time.ctime(time.time())).date()
+    last_message = temp_df
+    # today = pd.to_datetime(time.ctime(time.time())).date()
+    today = temp_df.iloc[-1]['Date']
     print(f"Today date is : {today}")
-    today_index = temp_df[temp_df['Date'] == today].index
-    today_index = today_index[0]
+    # today_index = temp_df[temp_df['Date'] == today].index
+    today_index = temp_df.index[-1]
     print(f"Index in today_index is : {today_index}")
     print(f"Date of month back is {date_of_month_back}")
     date_of_month_back_index = temp_df[temp_df['Date']==date_of_month_back].index
@@ -130,6 +132,23 @@ def total_messagelength_of_every_user(chats_dataFrame):
     print(another_df.groupby('User_Name').sum().reset_index().drop(columns='Year').sort_values(by='Message_Length').head(50))
     return another_df
     pass
+
+
+def message_Count_by_month(chat_dataFrame):
+    temp_df = chats_dataFrame.copy()
+    temp_df['Message_Count'] = [1] * temp_df.shape[0]
+    temp_df = temp_df.groupby('Month').sum().reset_index()
+    temp_df.drop(columns='Year', inplace=True)
+    print(temp_df)
+
+
+def message_Count_by_days(chats_dataFrame):
+    temp_df = chats_dataFrame.copy()
+    temp_df['Message_Count'] = [1] * chats_dataFrame.shape[0]
+    temp_df = temp_df.groupby('Day').sum().reset_index()
+    temp_df.drop(columns='Year', inplace=True)
+    print("Message count after grouping by days")
+    print(temp_df)
 
 
 def creating_dateFrame_for_Iphone_chat(file_name):
@@ -219,6 +238,8 @@ if __name__ == '__main__':
     chats_dataFrame = creating_dataFrame(file_name)
     chats_dataFrame = most_active_users(chats_dataFrame)
     last_30_days_chat(chats_dataFrame)
+    message_Count_by_days(chats_dataFrame)
+    message_Count_by_month(chats_dataFrame)
 
 
     pass
