@@ -9,7 +9,6 @@ import matplotlib as mlt
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-
 def converting_time_in_12hr_format():
     return '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s'
 
@@ -149,6 +148,11 @@ def message_Count_by_days(chats_dataFrame):
     temp_df.drop(columns='Year', inplace=True)
     print("Message count after grouping by days")
     print(temp_df)
+
+
+def top10_emojis(chats_dataFrame):
+    emoji_ctr = counter()
+
 
 
 def creating_dateFrame_for_Iphone_chat(file_name):
