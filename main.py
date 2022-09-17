@@ -159,13 +159,13 @@ def creating_dateFrame_for_Iphone_chat(file_name):
     """ Converting raw data into presentable data frame"""
 
     split_formats = {
-        '12hr': converting_time_in_12hr_format(),
-        '24hr': converting_time_in_24hr_format(),
+        '12hr': converting_time_in_12hr_format_for_iphone(),
+        '24hr': converting_time_in_24hr_format_for_iphone(),
         'custom': ''
     }
     datetime_formats = {
-        '12hr': date_time_12hr_format(),
-        '24hr': date_time_24hr_format(),
+        '12hr': date_time_12hr_format_iphone(),
+        '24hr': date_time_24hr_format_iphone(),
         'custom': ''
     }
 
@@ -239,7 +239,10 @@ def creating_dataFrame(file_name):
 if __name__ == '__main__':
     chat_format = input("Enter 1 if whatsapp chat text is from android and 0 if it is from Iphone : ")
     file_name = input("Enter file name with extension : ")
-    chats_dataFrame = creating_dataFrame(file_name)
+    if chat_format == 1:
+        chats_dataFrame = creating_dataFrame("")
+    else:
+        chats_dataFrame = creating_dateFrame_for_Iphone_chat("")
     chats_dataFrame = most_active_users(chats_dataFrame)
     last_30_days_chat(chats_dataFrame)
     message_Count_by_days(chats_dataFrame)
