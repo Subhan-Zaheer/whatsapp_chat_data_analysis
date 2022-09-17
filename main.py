@@ -151,7 +151,7 @@ def message_Count_by_days(chats_dataFrame):
 
 
 def top10_emojis(chats_dataFrame):
-    emoji_ctr = counter()
+   pass
 
 
 
@@ -237,7 +237,7 @@ def creating_dataFrame(file_name):
 
 
 if __name__ == '__main__':
-
+    chat_format = input("Enter 1 if whatsapp chat text is from android and 0 if it is from Iphone : ")
     file_name = input("Enter file name with extension : ")
     chats_dataFrame = creating_dataFrame(file_name)
     chats_dataFrame = most_active_users(chats_dataFrame)
