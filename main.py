@@ -9,6 +9,7 @@ import matplotlib as mlt
 from matplotlib import pyplot as plt
 import seaborn as sns
 import sys
+import random
 
 
 def converting_time_in_12hr_format():
@@ -92,6 +93,13 @@ def adding_helper_columns(chats_dataFrame):
     pass
 
 
+def save_to_excel(df, filename_with_path, sheet_name):
+    I = random.randint(1, 5)
+    with pd.ExcelWriter(r"E:\Python files\chat for what chat analyzer\BDS Chat Stats.xlsx", mode='a') as writer:
+        df.to_excel(writer, sheet_name=f'Most Active Users' + str(I))
+        I = I + 1
+    pass
+
 def most_active_users(chats_dataFrame):
     temp_chats_dataFrame = chats_dataFrame.copy()
     temp_chats_dataFrame['Message_Count'] = [1] * chats_dataFrame.shape[0]
@@ -99,6 +107,7 @@ def most_active_users(chats_dataFrame):
     temp_chats_dataFrame = temp_chats_dataFrame.groupby('User_Name').sum(numeric_only=True).reset_index()
     print(temp_chats_dataFrame.sort_values(by='Message_Count', ascending=False).head(50))
     print(temp_chats_dataFrame.describe())
+    save_to_excel(temp_chats_dataFrame, "", "")
     return chats_dataFrame
 
 
