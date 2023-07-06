@@ -167,7 +167,7 @@ def creating_dateFrame_for_Iphone_chat(file_name):
         'custom': ''
     }
 
-    file = open(r"bds_chat_data.txt",
+    file = open(file_name,
                 'r',
                 encoding='utf-8')
 
@@ -211,7 +211,7 @@ def creating_dataFrame(file_name):
         'custom': ''
     }
 
-    file = open(r"bds_chat_data.txt", 'r', encoding='utf-8')
+    file = open(file_name, 'r', encoding='utf-8')
 
     raw_string = " ".join(file.read().split('\n'))   # splitting our text by \n.
 
@@ -245,7 +245,7 @@ if __name__ == '__main__':
     #     chats_dataFrame = creating_dataFrame('bds_chat_data.txt')
     # else:
     #     chats_dataFrame = creating_dateFrame_for_Iphone_chat("bds_chat_data.txt")
-    chats_dataFrame = creating_dataFrame("bds_chat_data.txt")
+    chats_dataFrame = creating_dataFrame(r"E:\Python files\chat for what chat analyzer\bds_chat_data.txt")
     chats_dataFrame = most_active_users(chats_dataFrame)
     last_30_days_chat(chats_dataFrame)
     message_Count_by_days(chats_dataFrame)
